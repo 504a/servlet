@@ -26,7 +26,6 @@ public class CreateForm extends HttpServlet {
 	 */
 	public CreateForm() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

@@ -27,7 +27,6 @@ public class Index extends HttpServlet {
 	 */
 	public Index() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -35,7 +34,6 @@ public class Index extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		//データベースへの接続とSQL実行
 		UserRepository repository = new UserRepository("sample", "root", "1234");
 		UserService service = new UserService(repository);
@@ -59,7 +57,6 @@ public class Index extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

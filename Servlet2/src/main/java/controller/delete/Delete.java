@@ -23,7 +23,6 @@ public class Delete extends HttpServlet {
 	 */
 	public Delete() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

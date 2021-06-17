@@ -25,7 +25,6 @@ public class DeleteConfirm extends HttpServlet {
 	 */
 	public DeleteConfirm() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
