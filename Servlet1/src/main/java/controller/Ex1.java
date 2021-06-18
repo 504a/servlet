@@ -28,9 +28,9 @@ public class Ex1 extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String view = "/ex1/form.html";// �]����URL
-		RequestDispatcher rd = request.getRequestDispatcher(view);// �f�B�X�p�b�`���쐬
-		rd.forward(request, response);//�t�H���[�h
+		String view = "/ex1/form.html";
+		RequestDispatcher rd = request.getRequestDispatcher(view);
+		rd.forward(request, response);
 	}
 
 	/**
@@ -38,19 +38,18 @@ public class Ex1 extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");// �����R�[�h�̐ݒ�
-		response.setContentType("text/html; charset=UTF-8");// �����R�[�h�̐ݒ�
+		request.setCharacterEncoding("utf-8");
 
-		String name = request.getParameter("name");// ���O�̎擾
-		String gender = request.getParameter("gender");// ���ʂ̎擾
-		String age = request.getParameter("age");// �N��̎擾
+		String name = request.getParameter("name");
+		String gender = request.getParameter("gender");
+		String age = request.getParameter("age");
 
 		request.setAttribute("name", name);
 		request.setAttribute("gender", gender);
 		request.setAttribute("age", age);
 
-		String view = "/WEB-INF/view/ex1/result.jsp";// �]����URL
-		RequestDispatcher rd = request.getRequestDispatcher(view);// �f�B�X�p�b�`���쐬
+		String view = "/WEB-INF/view/ex1/result.jsp";
+		RequestDispatcher rd = request.getRequestDispatcher(view);
 		rd.forward(request, response);
 	}
 

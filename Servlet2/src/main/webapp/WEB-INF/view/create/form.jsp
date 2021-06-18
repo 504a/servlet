@@ -27,7 +27,7 @@
                 <td><input type="text" name="age" id="age" value="${user.age}"></td>
            	</tr>
         </table>
-        <input type="hidden" name="token" value="${token}"/>
+        <input type="hidden" name="token" value="${sessionScope.token}"/>
         <button type="submit">登録</button>
     </form>
     <form action="./" method="get">

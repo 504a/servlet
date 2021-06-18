@@ -28,6 +28,8 @@
            	</tr>
         </table>
         <input type="hidden" name="id" id="id" value="${user.id}">
+        <input type="hidden" name="token" value="${sessionScope.token}"/>
+        
         <button type="submit">更新</button>
     </form>
     <form action="./" method="get">

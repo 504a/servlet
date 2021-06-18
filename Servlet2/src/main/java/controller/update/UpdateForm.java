@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import lib.Csrf;
 import model.User;
 import repository.UserRepository;
 import service.UserService;
@@ -67,6 +68,10 @@ public class UpdateForm extends HttpServlet {
 			}
 			request.setAttribute("genderMap", genderMap);
 		}
+
+		// トークンの作成
+		String token = Csrf.getCsrfToken();// トークンの生成
+		session.setAttribute("token", token);// セッションへの保存
 
 		// 転送
 		String view = "/WEB-INF/view/update/form.jsp";
