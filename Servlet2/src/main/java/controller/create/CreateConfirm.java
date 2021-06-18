@@ -64,6 +64,8 @@ public class CreateConfirm extends HttpServlet {
 			}
 
 			// セッションへ保存
+			String token = Csrf.getCsrfToken();// トークンの生成
+			session.setAttribute("token", token);// セッションへの保存
 			User user = new User(0, name, gender, age);
 			session.setAttribute("user", user);
 			session.setAttribute("genderMap", genderMap);

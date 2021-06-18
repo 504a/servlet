@@ -8,7 +8,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import lib.Csrf;
 import model.User;
 import repository.UserRepository;
 import service.UserService;
@@ -42,10 +44,14 @@ public class DeleteConfirm extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// トークンの作成
+		HttpSession session = request.getSession();
+		String token = Csrf.getCsrfToken();// トークンの生成
+		session.setAttribute("token", token);// セッションへの保存
+
 		// リクエストパラメーターの受取
 		request.setCharacterEncoding("utf-8");
 		String id = request.getParameter("id");
-		System.out.println(id);
 
 		// データベースの接続
 		UserRepository repository = new UserRepository("sample", "root", "1234");

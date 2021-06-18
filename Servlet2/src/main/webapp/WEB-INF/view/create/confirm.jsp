@@ -16,6 +16,7 @@
         </tr>
     </table>	
     <form action="./Create" method="post">
+        <input type="hidden" name="token" value="${sessionScope.token}"/>    
         <button type="submit">登録</button>
     </form>
     <form action="./CreateForm" method="get">

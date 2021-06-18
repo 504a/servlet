@@ -16,6 +16,7 @@
         </tr>
     </table>	
     <form action="./Update" method="post">
+        <input type="hidden" name="token" value="${sessionScope.token}"/>
         <button type="submit">更新</button>
     </form>
     <form action="./UpdateForm" method="post">

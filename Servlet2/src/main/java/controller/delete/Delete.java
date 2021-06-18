@@ -7,7 +7,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import lib.Csrf;
 import repository.UserRepository;
 import service.UserService;
 
@@ -40,17 +42,27 @@ public class Delete extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// リクエストパラメーターの受取
+		// トークンチェック
+		HttpSession session = request.getSession();
 		request.setCharacterEncoding("utf-8");
-		String id = request.getParameter("id");
-		System.out.println(id);
-		// データベースの接続
-		UserRepository repository = new UserRepository("sample", "root", "1234");
-		UserService service = new UserService(repository);
+		String formToken = request.getParameter("token");
 
-		service.delete(id);
+		if (Csrf.checkToken(session, formToken)) {
+			// リクエストパラメーターの受取
+			request.setCharacterEncoding("utf-8");
+			String id = request.getParameter("id");
+			System.out.println(id);
+			// データベースの接続
+			UserRepository repository = new UserRepository("sample", "root", "1234");
+			UserService service = new UserService(repository);
 
-		response.sendRedirect("./");
+			service.delete(id);
+
+			response.sendRedirect("./");
+		} else {
+			response.sendRedirect("./");
+		}
+
 	}
 
 }

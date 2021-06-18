@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import lib.Csrf;
 import model.User;
 import repository.UserRepository;
 import service.UserService;
@@ -42,22 +43,30 @@ public class Update extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		// データベースの接続
-		UserRepository repository = new UserRepository("sample", "root", "1234");
-		UserService service = new UserService(repository);
-
-		// 更新の実行
+		// トークンチェック
 		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
-		String id = Integer.toString(user.getId());
-		String name = user.getName();
-		String gender = user.getGender();
-		String age = Integer.toString(user.getAge());
+		request.setCharacterEncoding("utf-8");
+		String formToken = request.getParameter("token");
 
-		service.save(id, name, gender, age);
+		if (Csrf.checkToken(session, formToken)) {
+			// データベースの接続
+			UserRepository repository = new UserRepository("sample", "root", "1234");
+			UserService service = new UserService(repository);
 
-		response.sendRedirect("./");
+			// 更新の実行
+			User user = (User) session.getAttribute("user");
+			String id = Integer.toString(user.getId());
+			String name = user.getName();
+			String gender = user.getGender();
+			String age = Integer.toString(user.getAge());
+
+			service.save(id, name, gender, age);
+
+			response.sendRedirect("./");
+		} else {
+			response.sendRedirect("./");
+		}
+
 	}
 
 }

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import lib.Csrf;
 import model.User;
 
 /**
@@ -43,30 +44,42 @@ public class UpdateConfirm extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// リクエストの取得
+		// トークンチェック
+		HttpSession session = request.getSession();
 		request.setCharacterEncoding("utf-8");
-		int id = Integer.parseInt(request.getParameter("id"));
-		String name = request.getParameter("name");
-		String gender = request.getParameter("gender");
-		int age = Integer.parseInt(request.getParameter("age"));
+		String formToken = request.getParameter("token");
 
-		// 性別マップ作成
-		Map<String, Boolean> genderMap = new HashMap<>();
-		if ("男".equals(gender)) {
-			genderMap.put("male", true);
+		if (Csrf.checkToken(session, formToken)) {
+			// リクエストの取得
+			request.setCharacterEncoding("utf-8");
+			int id = Integer.parseInt(request.getParameter("id"));
+			String name = request.getParameter("name");
+			String gender = request.getParameter("gender");
+			int age = Integer.parseInt(request.getParameter("age"));
+
+			// 性別マップ作成
+			Map<String, Boolean> genderMap = new HashMap<>();
+			if ("男".equals(gender)) {
+				genderMap.put("male", true);
+			} else {
+				genderMap.put("female", true);
+			}
+
+			// セッションへ保存
+			// トークンの作成
+			String token = Csrf.getCsrfToken();// トークンの生成
+			session.setAttribute("token", token);// セッションへの保存
+			User user = new User(id, name, gender, age);
+			session.setAttribute("user", user);
+			session.setAttribute("genderMap", genderMap);
+
+			String view = "/WEB-INF/view/update/confirm.jsp";
+			RequestDispatcher dispatcher = request.getRequestDispatcher(view);
+			dispatcher.forward(request, response);
 		} else {
-			genderMap.put("female", true);
+			response.sendRedirect("./");
 		}
 
-		// セッションへ保存
-		HttpSession session = request.getSession();
-		User user = new User(id, name, gender, age);
-		session.setAttribute("user", user);
-		session.setAttribute("genderMap", genderMap);
-
-		String view = "/WEB-INF/view/update/confirm.jsp";
-		RequestDispatcher dispatcher = request.getRequestDispatcher(view);
-		dispatcher.forward(request, response);
 	}
 
 }

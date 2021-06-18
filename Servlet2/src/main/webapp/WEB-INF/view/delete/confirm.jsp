@@ -19,6 +19,7 @@
     </table>
     <form action="./Delete" method="post">
         <input type="hidden" name="id" value="<c:out value="${user.id}"/>">
+        <input type="hidden" name="token" value="${sessionScope.token}"/>
 	    <button type="submit">削除</button>
     </form>
     <form action="./" method="get">
