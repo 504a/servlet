@@ -79,4 +79,9 @@ public class Member {
 		this.remarks = remarks;
 	}
 
+	@Override
+	public String toString() {
+		return String.join(",", String.valueOf(id), name, zip, address1, address2, phone, remarks);
+	}
+
 }
