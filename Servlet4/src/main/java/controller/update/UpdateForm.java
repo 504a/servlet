@@ -2,6 +2,7 @@ package controller.update;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,14 +18,14 @@ import service.MemberService;
 /**
  * Servlet implementation class Create
  */
-@WebServlet("/Update")
-public class Update extends HttpServlet {
+@WebServlet("/UpdateForm")
+public class UpdateForm extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public Update() {
+	public UpdateForm() {
 		super();
 	}
 
@@ -43,31 +44,25 @@ public class Update extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// トークンチェック
-		HttpSession session = request.getSession();
+		// データベースからの読み込み
 		request.setCharacterEncoding("utf-8");
-		String formToken = request.getParameter("token");
+		String id = request.getParameter("id");
 
-		if (Csrf.checkToken(session, formToken)) {
-			// データベースの接続
-			MemberRepository repository = new MemberRepository("sample", "root", "1234");
-			MemberService service = new MemberService(repository);
+		MemberRepository repository = new MemberRepository("sample", "root", "1234");
+		MemberService service = new MemberService(repository);
 
-			// 更新の実行
-			Member member = (Member) session.getAttribute("member");
-			String id = Integer.toString(member.getId());
-			String name = member.getName();
-			String zip = member.getZip();
-			String address1 = member.getAddress1();
-			String address2 = member.getAddress2();
-			String phone = member.getPhone();
-			String remarks = member.getRemarks();
-			service.save(id, name, zip, address1, address2, phone, remarks);
+		Member member = service.findById(id);
+		request.setAttribute("member", member);
 
-			response.sendRedirect("./");
-		} else {
-			response.sendRedirect("./");
-		}
+		// トークンの作成
+		HttpSession session = request.getSession();
+		String token = Csrf.getCsrfToken();// トークンの生成
+		session.setAttribute("token", token);// セッションへの保存
+
+		// 転送
+		String view = "/WEB-INF/view/update/form.jsp";
+		RequestDispatcher dispatcher = request.getRequestDispatcher(view);
+		dispatcher.forward(request, response);
 
 	}
 
